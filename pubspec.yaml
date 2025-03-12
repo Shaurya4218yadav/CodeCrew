@@ -1,30 +1,26 @@
-name: codecrew
-description: A collaborative project matching platform
+name: code_crew
+description: A Code Crew collaboration app
+publish_to: 'none'
+version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
-  provider: ^6.0.0
-  http: ^1.1.0
-  flutter_swiper_plus: ^2.0.4
-  cached_network_image: ^3.2.3
-  flutter_secure_storage: ^8.0.0
-  intl: ^0.18.1
+  supabase_flutter: ^2.0.0
+  image_picker: ^1.0.5
+  flutter_svg: ^2.0.9
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/
-    - assets/icons/
-
-  # fonts can be added here if needed

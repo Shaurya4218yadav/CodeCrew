@@ -1,45 +1,56 @@
+import 'package:code_crew/pages/login_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'screens/onboarding_screen.dart';
-import 'screens/match_screen.dart';
-import 'services/user_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:code_crew/pages/account_page.dart';
+import 'package:code_crew/utils/constants.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserService()),
-      ],
-      child: const CodeCrewApp(), // Use const here
-    ),
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'YOUR_SUPABASE_URL',
+    anonKey: 'YOUR_SUPABASE_ANON_KEY',
   );
+
+  runApp(const MyApp());
 }
 
-class CodeCrewApp extends StatelessWidget {
-  const CodeCrewApp({Key? key}) : super(key: key); // Add key parameter
+final supabase = Supabase.instance.client;
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CodeCrew',
+      title: 'Code Crew',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        appBarTheme: const AppBarTheme( // Add const here
-          color: Colors.white,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+        fontFamily: 'Inter',
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.black),
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            minimumSize: const Size(double.infinity, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
       ),
-      home: const OnboardingScreen(), // Use const here
-      routes: {
-        '/match': (context) => const MatchScreen(), // Use const here
-      },
+      home: supabase.auth.currentSession != null
+          ? const AccountPage()
+          : const LoginPage(),
     );
   }
 }
